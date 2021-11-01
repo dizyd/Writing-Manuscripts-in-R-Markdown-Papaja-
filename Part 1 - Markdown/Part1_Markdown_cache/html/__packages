@@ -1,4 +1,10 @@
 base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
 tidyverse
 ggplot2
 tibble
@@ -8,9 +14,9 @@ purrr
 dplyr
 stringr
 forcats
-gganimate
 kableExtra
 DT
+gganimate
+parameters
+correlation
 plotly
-papaja
-tinylabels

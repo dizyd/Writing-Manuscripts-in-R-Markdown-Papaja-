@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Modern R</title>
+    <title>Workshop: Writing Manuscripts in R with Markdown and Papaja</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Izydorczyk" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
-    <script src="libs/jquery/jquery.min.js"></script>
     <link href="libs/datatables-css/datatables-crosstalk.css" rel="stylesheet" />
     <script src="libs/datatables-binding/datatables.js"></script>
+    <script src="libs/jquery/jquery-3.6.0.min.js"></script>
     <link href="libs/dt-core/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link href="libs/dt-core/css/jquery.dataTables.extra.css" rel="stylesheet" />
     <script src="libs/dt-core/js/jquery.dataTables.min.js"></script>
@@ -32,10 +32,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Modern R
-## From R Markdown to Shiny
+# Workshop: Writing Manuscripts in R with Markdown and Papaja
 ### David Izydorczyk
-### 06.07.2021
+### 11.11.2021
 
 ---
 
@@ -47,25 +46,23 @@ class: center, middle, inverse, title-slide
 
 ## Workshop
 
-This workshop consists of three parts:
+This mini-workshop consists of two parts:
 
 1. Introduction to R Markdown
 2. Writing scientific articles with the [papaja](https://github.com/crsh/papaja) package
-3. Introduction to Shiny Applications 
+
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
 ## Learning Goals
 
-At the end of this workshop, you should be able to:
+At the end of this mini-workshop, you should ... :
 
-- Know what `RMarkdown` is and how it works
+- ... know what `RMarkdown` is and how it works
 
-- Know how to integrate code and data with `RMarkdown`
+- ... know how to integrate code and data with `RMarkdown`
 
-- Write APA conform manuscripts with the `papaja`-package
-
-- Develop and deploy your own shiny app
+- ... be able to write APA conform manuscripts with the `papaja`-package
 
 
 
@@ -380,8 +377,8 @@ class: small
 Emphasis
 
 ```r
-__bold__  (or use *)
-_italic_
+__bold__  (or use *) ## **bold**
+_italic_ ## *italic* 
 ~~strikethrough~~
 ```
 
@@ -471,12 +468,9 @@ or images (see [here](https://stackoverflow.com/questions/25166624/insert-pictur
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
-## HTML &amp; LaTeX
+## HTML 
 
-
-
-
-You can also directly use `HTML` code
+If you are knitting to `HTML` (`output: html_document`), you can also directly use `HTML` code
 
 
 ```r
@@ -488,13 +482,33 @@ You can also directly use `HTML` code
 &lt;b&gt; this is bold &lt;/b&gt;
 &lt;font color ="#FF8C00"&gt;Orange text&lt;/font&gt;
 
-***
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## LaTeX
 
-or Math expressions with `LaTeX`
+- You can also use `LaTeX` code for `HTML` &amp; `Word` inside the "math-expression" (and `PDFs` everywhere)
+- the math-expression/environment is activated and closed via "$"  
+
+For example:
 
 
 ```r
-`\(f(k) = {n \choose k} p^{k} (1-p)^{n-k}\)` # use $ instead of \)`
+ $ M_{age} $
+```
+
+`\(M_{age}\)`
+
+
+```r
+ $ \eta^{2} $
+```
+
+`\(\eta^{2}\)`
+
+
+
+```r
+ $ f(k) = {n \choose k} p^{k} (1-p)^{n-k} $ 
 ```
 
 `\(f(k) = {n \choose k} p^{k} (1-p)^{n-k}\)`
@@ -504,7 +518,7 @@ use `$$` for display style (same as `"\begin{equation} ... \end{equation}"`)
 `$$f(k) = {n \choose k} p^{k} (1-p)^{n-k}$$`
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
-## The Visual Markdown Editor (new)
+## The Visual Markdown Editor (newish)
 
 Since RStudio Version 1.4 we have a **visual Markdown Editor** (upper-right corner) 
 
@@ -529,11 +543,104 @@ Visual Markdown Editor - on
 ]
 
 
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Now it's your turn !
+
+- Create an RMarkdown document
+- Play around with some YAML header options
+- Write some text, put in some tables, images etc.
+
+
+
+
+
+
 &lt;!-- *********** HEADING ************** --&gt;
 ---
 class: heading, middle
 
 R Code 
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Inline R Code
+
+You can use inline `R` code like this: 
+
+
+```r
+This is the mean `r round(mean(rnorm(100)),2)` 
+```
+
+becomes: This is the mean 0
+
+***
+
+And you can combine it with `LaTeX` math expressions
+
+
+```r
+This is the mean $ M_{age} = `r rnorm(100,22,10) %&gt;% mean() %&gt;%  round(.,2)`$
+```
+
+becomes: This is the mean `\(M_{age} = 22\)`
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Example in action: 
+
+
+
+```r
+demo &lt;- data.frame(age    = rnorm(100,25,5),
+                   gender = sample(x    = c("male","female"),
+                                   size = 100,
+                                   prob = c(0.3,0.7),replace=T))
+```
+
+
+```r
+Our final sample consisted of $ n $ = `r nrow(demo)` 
+participants (`r mean(demo$gender=="female")*100` % female,
+$ M_{age} = `r demo[,"age"] %&gt;% mean() %&gt;% round()`$)
+```
+
+Our final sample consisted of `\(n\)` = 100 participants (66 % female, `\(M_{age} = 24.07\)`)
+
+***
+
+! Careful when selecting data.frame columns with $ inside `LaTeX` expressions. 
+
+
+
+```r
+$ M_{age} = `r demo$age %&gt;% mean() %&gt;% round()`$
+```
+
+
+***
+
+`tidyverse` "trick":
+
+
+```r
+$ M_{age} = `r demo %&gt;% pull(age) %&gt;% mean() %&gt;% round()`$
+```
+
+`\(M_{age} = 24.07\)`
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Now it's your turn !
+
+- Try to write some inline R code (you can use the R-intern data.frames like `sleep`, `mtcars`, or`chickwts`)
+- Combine it with `LaTeX` math-expressions ($)
+
+
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
@@ -551,7 +658,6 @@ rnorm(2)
 
 
 
-
 ```r
 4 + 2
 ```
@@ -565,7 +671,7 @@ rnorm(2)
 ```
 
 ```
-## [1] 1.8794439 0.6281507
+## [1] -1.947964  1.097742
 ```
 ]
 
@@ -587,33 +693,93 @@ Some important chunk options (see also [here](https://yihui.org/knitr/options/#c
 ]
 
 
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Examples
 
+
+- `echo = TRUE`
+
+
+```r
+4 + 2
+```
+
+```
+## [1] 6
+```
+
+***
+
+- `echo = FALSE`
+
+
+```
+## [1] 6
+```
+
+***
+
+- `include = FALSE`
+
+
+
+***
+
+- `include = TRUE, eval = FALSE`
+
+
+```r
+4 + 2
+```
 
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
-## Inline R Code
+## Reading in Data &amp;  Paths when knitting
 
-You can use inline `R` code like this: 
+Sometimes the paths can be tricky when using Markdown documents, for instance when reading in your data. When knitting, `R` defaults to using the directory of the `.Rmd` document as the working directory. 
 
-
-```r
-This is the mean `r mean(rnorm(100))` 
-```
-
-becomes: This is the mean -0.0668762 
-
-
-&lt;br&gt;&lt;br&gt;
-
-And you can combine it with `LaTeX` math expressions
+So if you have the following project structure:
 
 
 ```r
-This is the mean `\(M_{age} = `r rnorm(100,22,10) %&gt;% mean() %&gt;%  round(.,2)`\)`
+CoolProject
+  - Data
+    |-- raw.csv
+  - Scripts
+    |-- analyis.R
+    |-- report.Rmd
+  - Manuscript
+    |-- V2_001_finish.docx
+  CoolProject.Rproj
 ```
 
-becomes: This is the mean `\(M_{age} = 23\)`
+And your normal working directory is just `CoolProject`, you would use `read.csv("Data\raw.csv")` to read in the data for your `analysis.R`script.
+
+For your `report.Rmd`, however, you have to use `read.csv("..\Data\raw.csv")`, this is the relative path from your  `.Rmd` document.
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Example reading in the [`pumpkin.csv`](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-10-19/readme.md) 
+
+
+When you are writing your RMarkdown and working on your analysis, you would use code like this:
+
+
+```r
+sleep &lt;- read.csv2("Data/sleep.csv")
+```
+
+However, when you knit this you will get an error `Fehler in file(file, "rt") : kann Verbindung nicht öffnen ...` . Instead you should use:
+
+
+```r
+sleep &lt;- read.csv2("../Data/sleep.csv")
+```
+
+Read `../` as "go up one folder in the folder-structure". 
+
 
 
 &lt;!-- *********** HEADING ************** --&gt;
@@ -658,92 +824,23 @@ With `kable()`:
 ```r
 library(kableExtra)
 
-kable(head(iris,10))
+kable(head(iris,10),format="markdown")  # or format = latex if output: pdf_document
 ```
 
-&lt;table&gt;
- &lt;thead&gt;
-  &lt;tr&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Sepal.Width &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Length &lt;/th&gt;
-   &lt;th style="text-align:right;"&gt; Petal.Width &lt;/th&gt;
-   &lt;th style="text-align:left;"&gt; Species &lt;/th&gt;
-  &lt;/tr&gt;
- &lt;/thead&gt;
-&lt;tbody&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.2 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.3 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.7 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.4 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.6 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.3 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 5.0 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 2.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.4 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.2 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td style="text-align:right;"&gt; 4.9 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 3.1 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 1.5 &lt;/td&gt;
-   &lt;td style="text-align:right;"&gt; 0.1 &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; setosa &lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
+
+
+| Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species |
+|------------:|-----------:|------------:|-----------:|:-------|
+|          5.1|         3.5|          1.4|         0.2|setosa  |
+|          4.9|         3.0|          1.4|         0.2|setosa  |
+|          4.7|         3.2|          1.3|         0.2|setosa  |
+|          4.6|         3.1|          1.5|         0.2|setosa  |
+|          5.0|         3.6|          1.4|         0.2|setosa  |
+|          5.4|         3.9|          1.7|         0.4|setosa  |
+|          4.6|         3.4|          1.4|         0.3|setosa  |
+|          5.0|         3.4|          1.5|         0.2|setosa  |
+|          4.4|         2.9|          1.4|         0.2|setosa  |
+|          4.9|         3.1|          1.5|         0.1|setosa  |
 
 
 
@@ -765,8 +862,8 @@ DT::datatable(head(iris,10),
           ))
 ```
 
-<div id="htmlwidget-834e68c0865189d5a154" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-834e68c0865189d5a154">{"x":{"filter":"top","filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"4.4\" data-max=\"5.4\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"2.9\" data-max=\"3.9\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"1.3\" data-max=\"1.7\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none; position: absolute; width: 200px;\">\n      <div data-min=\"0.1\" data-max=\"0.4\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"disabled\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"lengthMenu":[[2,3,-1],["2","3","All"]],"pageLength":3,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-85d7b06bacd1bd861876" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-85d7b06bacd1bd861876">{"x":{"filter":"top","vertical":false,"filterHTML":"<tr>\n  <td><\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"4.4\" data-max=\"5.4\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"2.9\" data-max=\"3.9\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"1.3\" data-max=\"1.7\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"number\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n    <div style=\"display: none;position: absolute;width: 200px;opacity: 1\">\n      <div data-min=\"0.1\" data-max=\"0.4\" data-scale=\"1\"><\/div>\n      <span style=\"float: left;\"><\/span>\n      <span style=\"float: right;\"><\/span>\n    <\/div>\n  <\/td>\n  <td data-type=\"disabled\" style=\"vertical-align: top;\">\n    <div class=\"form-group has-feedback\" style=\"margin-bottom: auto;\">\n      <input type=\"search\" placeholder=\"All\" class=\"form-control\" style=\"width: 100%;\"/>\n      <span class=\"glyphicon glyphicon-remove-circle form-control-feedback\"><\/span>\n    <\/div>\n  <\/td>\n<\/tr>","data":[["1","2","3","4","5","6","7","8","9","10"],[5.1,4.9,4.7,4.6,5,5.4,4.6,5,4.4,4.9],[3.5,3,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1],[1.4,1.4,1.3,1.5,1.4,1.7,1.4,1.5,1.4,1.5],[0.2,0.2,0.2,0.2,0.2,0.4,0.3,0.2,0.2,0.1],["setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa","setosa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Sepal.Length<\/th>\n      <th>Sepal.Width<\/th>\n      <th>Petal.Length<\/th>\n      <th>Petal.Width<\/th>\n      <th>Species<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"lengthMenu":[[2,3,-1],["2","3","All"]],"pageLength":3,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"orderCellsTop":true}},"evals":[],"jsHooks":[]}</script>
 
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
@@ -814,11 +911,19 @@ output:
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
-## Nicer output  with [broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html)
+## Now it's your turn !
 
-From the documentation: "The [broom](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) package takes the messy output of built-in functions in R, such as lm, nls, or t.test, and turns them into tidy data frames."
+- Add a code chunk reading in the `sleep.csv` data from the `Data` folder
+- Print the data using either `kable`, `data.table`, or `df_print: paged`
 
-Works with results from `lm, glm, t.test, cor.test, wilcox.text (and lme4 with broom.mixed)`
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Nicer output  with [parameters](https://easystats.github.io/parameters/)
+
+From the documentation: [parameters](https://easystats.github.io/parameters/) primary goal is to provide utilities for processing the parameters of various statistical models (see here for a list of supported models)
+
+Works with results from `lm, lmer4, SEM, etc`
 
 
 .pull-left[
@@ -828,12 +933,86 @@ Normal `lm()` output:
 
 ]
 .pull-right[
-With `tidy()` from `broom` :
+With `model_parameters()` from `parameters` :
 
 ![lm1](images/example_lm1.PNG)
 
 ]
 
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Better correlation output with [correlation](https://easystats.github.io/correlation/)
+
+
+```r
+results &lt;- correlation(trees)
+results 
+```
+
+```
+## # Correlation Matrix (pearson-method)
+## 
+## Parameter1 | Parameter2 |    r |       95% CI | t(29) |         p
+## -----------------------------------------------------------------
+## Girth      |     Height | 0.52 | [0.20, 0.74] |  3.27 | 0.003**  
+## Girth      |     Volume | 0.97 | [0.93, 0.98] | 20.48 | &lt; .001***
+## Height     |     Volume | 0.60 | [0.31, 0.79] |  4.02 | &lt; .001***
+## 
+## p-value adjustment method: Holm (1979)
+## Observations: 31
+```
+
+
+```r
+results &lt;- correlation(trees)
+summary(results)
+```
+
+```
+## # Correlation Matrix (pearson-method)
+## 
+## Parameter |  Volume | Height
+## ----------------------------
+## Girth     | 0.97*** | 0.52**
+## Height    | 0.60*** |       
+## 
+## p-value adjustment method: Holm (1979)
+```
+
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Plots and their chunk options
+
+Every plot you make in R will just appear in your knitted RMarkdown document
+
+
+
+```r
+sleep %&gt;% 
+  ggplot(aes(x=group,y=extra)) +
+    geom_boxplot() +
+    geom_jitter(aes(fill = group),size = 2, shape = 21, height = 0, width = 0.2) +
+    theme_bw() +
+    labs(y = "increase in hours of sleep")
+```
+
+![](Part1_Markdown_files/figure-html/unnamed-chunk-40-1.svg)&lt;!-- --&gt;
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+## Plots and their chunk options
+
+Using the chunk options, you can ... :
+
+- change the height and width of the figure using `fig.height=3, fig.width= 4`
+
+- change the alignment of the figure with `fig.align='center'`
+
+- add a caption with  `fig.cap = "This is a caption" `
+
+- increase the resolution with `dpi = 900`
 
 
 
@@ -853,7 +1032,7 @@ ggplot(chickwts,aes(x=feed,y=weight)) +
   theme_bw()
 ```
 
-![](Part1_Markdown_files/figure-html/unnamed-chunk-25-1.svg)&lt;!-- --&gt;
+![](Part1_Markdown_files/figure-html/unnamed-chunk-41-1.svg)&lt;!-- --&gt;
 
 ]
 .pull-right[
@@ -869,50 +1048,19 @@ p &lt;- ggplot(chickwts,aes(x=feed,y=weight)) +
 *ggplotly(p)
 ```
 
-<div id="htmlwidget-ff44bbb149812111fec8" style="width:504px;height:324px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-ff44bbb149812111fec8">{"x":{"data":[{"x":[2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1],"y":[179,160,136,227,217,168,108,124,143,140,309,229,181,141,260,203,148,169,213,257,244,271,243,230,248,327,329,250,193,271,316,267,199,171,158,248,423,340,392,339,341,226,320,295,334,322,297,318,325,257,303,315,380,153,263,242,206,344,258,368,390,379,260,404,318,352,359,216,222,283,332],"hoverinfo":"y","type":"box","fillcolor":"rgba(255,255,255,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"showlegend":false,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":27.3647894469812,"r":7.30593607305936,"b":41.3191273465246,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,6.6],"tickmode":"array","ticktext":["casein","horsebean","linseed","meatmeal","soybean","sunflower"],"tickvals":[1,2,3,4,5,6],"categoryorder":"array","categoryarray":["casein","horsebean","linseed","meatmeal","soybean","sunflower"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"feed","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[92.25,438.75],"tickmode":"array","ticktext":["100","200","300","400"],"tickvals":[100,200,300,400],"categoryorder":"array","categoryarray":["100","200","300","400"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"weight","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"69014795ad6":{"x":{},"y":{},"type":"box"}},"cur_data":"69014795ad6","visdat":{"69014795ad6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-93bc0b1d2d01051d75bf" style="width:504px;height:324px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-93bc0b1d2d01051d75bf">{"x":{"data":[{"x":[2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1],"y":[179,160,136,227,217,168,108,124,143,140,309,229,181,141,260,203,148,169,213,257,244,271,243,230,248,327,329,250,193,271,316,267,199,171,158,248,423,340,392,339,341,226,320,295,334,322,297,318,325,257,303,315,380,153,263,242,206,344,258,368,390,379,260,404,318,352,359,216,222,283,332],"hoverinfo":"y","type":"box","fillcolor":"rgba(255,255,255,1)","marker":{"opacity":null,"outliercolor":"rgba(0,0,0,1)","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"},"size":5.66929133858268},"line":{"color":"rgba(51,51,51,1)","width":1.88976377952756},"showlegend":false,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":27.3647894469812,"r":7.30593607305936,"b":41.3191273465246,"l":43.1050228310502},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,6.6],"tickmode":"array","ticktext":["casein","horsebean","linseed","meatmeal","soybean","sunflower"],"tickvals":[1,2,3,4,5,6],"categoryorder":"array","categoryarray":["casein","horsebean","linseed","meatmeal","soybean","sunflower"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"feed","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[92.25,438.75],"tickmode":"array","ticktext":["100","200","300","400"],"tickvals":[100,200,300,400],"categoryorder":"array","categoryarray":["100","200","300","400"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"weight","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":"transparent","line":{"color":"rgba(51,51,51,1)","width":0.66417600664176,"linetype":"solid"},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"2368725e176b":{"x":{},"y":{},"type":"box"}},"cur_data":"2368725e176b","visdat":{"2368725e176b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 
 ]
 
-
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
-## Make gifs with  [gganimate](https://gganimate.com/) 
+## Now it's your turn !
 
+- Make some nice plots in R 
+- Play around with the chunk options
+- Maybe try changing the `output: ... ` part in the YAML header to test out different output formats 
 
-
-```r
-library(gganimate)
-
-N      = 500
-pHeads = 0.5
- 
-flipSequence &lt;- sample(x=c(0,1),prob = c(1-pHeads,pHeads),size=N,replace=T)
-flip_data    &lt;- data.frame(run=1:N,prop=cumsum(flipSequence)/1:N)
-
-g &lt;- ggplot(flip_data,aes(x=run,y=prop,frame=run)) +
-      geom_line(size=1)+
-      geom_segment(aes(xend = N-20, yend = prop), linetype = 2, colour = 'grey') + 
-      geom_point(aes(x = run),color = "tomato1",size = 2) + 
-      geom_text(aes(x = N-20, label = round(prop,2)), hjust = 0) +
-      xlim(1,500)+ylim(0.0,1.0)+
-      geom_hline(yintercept = pHeads)+
-      ggtitle("Running Proportion Heads of Unbiased Coin")+
-      ylab("Proportion of Heads")+
-      xlab("Flip Number") +
-      theme_bw()+
-      transition_reveal(run) +
-      coord_cartesian(clip = 'off') 
-```
-
----
-
-
-```r
-animate(g, height = 400, width = 700,nframes=50,fps=10)
-```
-
-![](Part1_Markdown_files/figure-html/unnamed-chunk-27-1.gif)&lt;!-- --&gt;
 
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
@@ -955,70 +1103,6 @@ rnorm(100,m,5) %&gt;% as.data.frame %&gt;%
 })
 # end code chunk
 ```
-
-
-&lt;!-- *********** NEW SLIDE ************** --&gt;
----
-## Note: Paths when knitting
-
-Sometimes the paths can be tricky when using Markdown documents, for instance when reading in your data. When knitting, `R` defaults to using the directory of the `.Rmd` document as the working directory. 
-
-So if you have the following project structure:
-
-
-```r
-CoolProject
-  - Data
-    |-- raw.csv
-  - Scripts
-    |-- analyis.R
-    |-- report.Rmd
-  - Manuscript
-    |-- V2_001_finish.docx
-  CoolProject.Rproj
-```
-
-And your normal working directory is just `CoolProject`, you would use `read.csv("Data\raw.csv")` to read in the data for your `analysis.R`script.
-
-For your `report.Rmd`, however, you have to use `read.csv("..\Data\raw.csv")`, this is the relative path from your  `.Rmd` document.
-
-
-&lt;!-- *********** NEW SLIDE ************** --&gt;
----
-## Now it's your turn !
-
-Create an `RMarkdown` file and delete everything execpt the YAML header and the setup chunk
-
-Create the following section structure:
-  1. Setup
-    1.1 Packages 
-    1.2 Data
-  2. Summary
-  3. Plot
-  
-Load the `ggplot2` package (`library(ggplot2)`) in a code chunk in the `1.1 Package` section you just created
-
-Load the [weight lifting data](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-08#readme) from the data folder in a code chunk in the `Data` section (`read.csv("Part 1 - Markdown/Data/weight_lifting.csv"")`). See [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-10-08#readme) for a description of the variables.
-
-Print the top of the dataframe (`data[1:5,]`)) in a code chunk in the `Summary` section, try using `datatable()` or  `kable()` (maybe you need to install the `DT` and the `kableExtra` packages first).
-
-Compute some summaries or linear regression (e.g. using `summary()/lm()`) for some variables you are interested in, in a code chunk in the `Summary` section.
-
-&lt;!-- *********** NEW SLIDE ************** --&gt;
----
-## Now it's your turn !
-
-Write some text describing the results using some of the text formatting options and inline R-code. 
-
-Write some math expressions with `LaTeX`. 
-
-Plot the `best3bench_kg` of participants by their age (`age`) or anything else that you are interested in, e.g. by using `ggplot(data,aes(x = age, y = best3bench_kg))+geom_point()`. **Note** the data contain many NAs, so use `na.rm=TRUE` when you aggregate.
-
-Try using `ggplotly`.
-
-Play around with YAML options, add some table of content, change the output format.
-
-Play around with the chunk options, what happens if you set a chunk to `echo=FALSE` or `include = FALSE` ? 
 
 
 

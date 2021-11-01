@@ -1,19 +1,20 @@
-# Workshop: Modern R
+# Workshop: Writing Manuscripts in R with Markdown and Papaja
 
-This repository contains the materials for the workshop **Modern R** at the SMiP graduate school in Mannheim, Germany. 
+This repository contains the materials for the workshop **Workshop: Writing Manuscripts in R with Markdown and Papaja**. 
 
-The workshop consists of three parts:
+The workshop consists of two parts:
 
 - Introduction to `R Markdown`
 - Writing APA conform manuscripts with the [`papaja`](https://github.com/crsh/papaja) package
-- Building interactive web applications in R with `Shiny`
 
+
+## Packages needed
 
 The following code can be used to install the packages used in this workshop:
 
 ```r
-wanted.packages <- c("tidyverse","ggplot2","devtools","shiny","gganimate","plotly","kableExtra",
-"DT","broom","rsconnect")
+wanted.packages <- c("tidyverse","ggplot2","devtools","parameters","gganimate","plotly","kableExtra",
+"DT","correlation")
   
 # Check what packages need to be installed
 new.packages <- wanted.packages[!(wanted.packages %in% installed.packages()[,"Package"])]
@@ -23,9 +24,11 @@ if(length(new.packages)) install.packages(new.packages,dependencies = TRUE)
 sapply(wanted.packages, require, character.only = TRUE)
 ```
 
-You also need to install the [papaja-package](https://github.com/crsh/papaja) and a `TeX` distribution (e.g., MikTeX for Windows, MacTeX for Mac, or TeX Live for Linux) to create .pdf documents. 
+## Also to be installed:
 
- If you did install LaTeX before or already created some .pdf documents with R Markdown, you are good to go.   If you have not installed LaTeX before, I recommend installing TinyTeX (https://yihui.name/tinytex/), which is a light and easy-to-maintain LaTeX distribution for R Markdown.
+For the second part of the workshop, you also need to install the [papaja-package](https://github.com/crsh/papaja) and a `TeX` distribution (e.g., MikTeX for Windows, MacTeX for Mac, or TeX Live for Linux) to create .pdf documents. 
+
+If you did install LaTeX before or already created some .pdf documents with R Markdown, you are good to go.   If you have not installed LaTeX before, I recommend installing TinyTeX (https://yihui.name/tinytex/), which is a light and easy-to-maintain LaTeX distribution for R Markdown.
 
 TinyTex can be installed from within R as follows.
 
