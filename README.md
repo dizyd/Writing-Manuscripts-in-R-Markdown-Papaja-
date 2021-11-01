@@ -12,7 +12,7 @@ The workshop consists of two parts:
 
 The slides are in `.html` format and can be found in the corresponding folders. The best way to make sure you have everything is to download this whole github repository by clicking on the green `Code` button and then on `Download ZIP`: 
 
-![](img\screenshot.png)
+![](img\screenshot.PNG)
 
 
 
