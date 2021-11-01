@@ -1,0 +1,7 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{Solution_files/figure-latex/figChick-1.pdf}
+\caption{\label{fig:figChick}These are some chickens}
+\end{figure*}

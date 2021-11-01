@@ -1,0 +1,42 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{tab:unnamed-chunk-2}Descriptive Results}
+\centering
+\begin{tabular}[t]{cccc}
+\toprule
+Education & \$M\$ & \$SD\$ & \$r\$\\
+\midrule
+associate's degree & 69.90 & 14.31 & .95\\
+bachelor's degree & 73.38 & 14.73 & .96\\
+high school & 62.45 & 14.09 & .95\\
+master's degree & 75.68 & 13.73 & .94\\
+some college & 68.84 & 15.01 & .95\\
+\addlinespace
+some high school & 64.89 & 15.74 & .96\\
+\bottomrule
+\end{tabular}
+\end{table*}
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+
+\begin{center}
+\begin{threeparttable}
+
+\caption{\label{tab:unnamed-chunk-4}}
+
+\begin{tabular}{lllllll}
+\toprule
+Effect & \multicolumn{1}{c}{$\hat{\eta}^2_G$} & \multicolumn{1}{c}{$F$} & \multicolumn{1}{c}{$\mathit{df}$} & \multicolumn{1}{c}{$\mathit{df}_{\mathrm{res}}$} & \multicolumn{1}{c}{$\mathit{MSE}$} & \multicolumn{1}{c}{$p$}\\
+\midrule
+Gender & .029 & 29.90 & 1 & 993 & 216.75 & < .001\\
+Parental level of education & .036 & 7.36 & 5 & 993 & 216.75 & < .001\\
+\bottomrule
+\end{tabular}
+
+\end{threeparttable}
+\end{center}
+
+\end{table*}
