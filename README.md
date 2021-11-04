@@ -23,7 +23,7 @@ The following code can be used to install the packages used in this workshop:
 
 ```r
 wanted.packages <- c("tidyverse","ggplot2","devtools","parameters","gganimate","plotly","kableExtra",
-"DT","correlation")
+"DT","correlation","corx","palmerpenguins")
   
 # Check what packages need to be installed
 new.packages <- wanted.packages[!(wanted.packages %in% installed.packages()[,"Package"])]

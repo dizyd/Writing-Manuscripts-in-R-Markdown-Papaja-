@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Modern R</title>
+    <title>Workshop: Writing Manuscripts in R with Markdown and Papaja</title>
     <meta charset="utf-8" />
     <meta name="author" content="David Izydorczyk" />
     <script src="libs/header-attrs/header-attrs.js"></script>
@@ -15,10 +15,9 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# Modern R
-## From RMarkdown to Shiny
+# Workshop: Writing Manuscripts in R with Markdown and Papaja
 ### David Izydorczyk
-### 06.07.2021
+### 11.11.2021
 
 ---
 
@@ -295,7 +294,7 @@ apa_print_fit$estimate$modelfit$r2
 ```
 
 ```
-## [1] "$R^2 = .78$"
+## [1] "$R^2 = .78$, 90\\% CI $[0.60, 0.86]$"
 ```
 
 ```r
@@ -316,7 +315,7 @@ apa_print_fit$full_result$hp
 ]
 .pull-right[
 
-`\(R^2 = .78\)`
+`\(R^2 = .78\)`, 90\% CI `\([0.60, 0.86]\)`
 
 &lt;br&gt;
 
@@ -337,8 +336,8 @@ apa_print_fit$full_result$hp
 
 
 ```r
-fit &lt;- lm(mpg ~ hp * cyl, data = mtcars)
-apa_print_fit = apa_print(fit)
+fit &lt;- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = na.omit(palmerpenguins::penguins))
+apa_print_fit &lt;-  apa_print(fit)
 
 apa_table(apa_print_fit$table,caption = "This is a regression table",note="Cool Table")
 ```
@@ -355,15 +354,70 @@ apa_table(apa_print_fit$table,caption = "This is a regression table",note="Cool 
 
 
 ```r
-fit &lt;- lm(mpg ~ hp * cyl, data = mtcars)
-apa_print_fit = apa_print(fit)
+fit &lt;- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = na.omit(palmerpenguins::penguins))
+apa_print_fit &lt;-  apa_print(fit)
 
 apa_table(apa_print_fit$table,caption = "This is a regression table",
-*         note="$M_I$ $//frac{3}{4}$ ", escape=TRUE)
+*         note="$M_I$ $\\frac{3}{4}$ ", escape = FALSE)
 ```
 
 .center[
 &lt;img src="images/example_apatable_print2.PNG", width="40%"&gt;
+]
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+class: small
+## Tables
+
+.pull-left[
+
+
+```r
+fit2 &lt;- lm(body_mass_g ~ bill_length_mm + flipper_length_mm + sex, data = na.omit(palmerpenguins::penguins))
+
+
+mod_comparison &lt;- apa_print(list(Baseline = fit,
+                                 Sex      = fit2),
+                            boot_samples=0)
+
+apa_table(mod_comparison$table,
+          caption = "This is a regression table",
+          note    = "Cool Table")
+```
+
+]
+
+.pull-right[
+&lt;img src="images/example_apatable_print3.PNG", width="100%"&gt;
+]
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+class: small
+## Tables
+
+.pull-left[
+
+
+```r
+fit2 &lt;- lm(body_mass_g ~ bill_length_mm + flipper_length_mm + sex, data = na.omit(palmerpenguins::penguins))
+
+
+mod_comparison &lt;- apa_print(list(Baseline = fit,
+                                 Sex      = fit2),
+                            boot_samples=0)
+
+*apa_table(mod_comparison$table[c(1:5,10:12),],
+          caption = "This is a regression table",
+          note    = "Cool Table")
+```
+
+]
+
+.pull-right[
+&lt;img src="images/example_apatable_print4.PNG", width="100%"&gt;
 ]
 
 
@@ -689,20 +743,57 @@ temp1 %&gt;%
 
 ]
 
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
+class: small
+## Tables
+
+Sometimes there are also additional `R` packages for specific table types compatible with `apa_table` (e.g., `corx` or `apaTables`)
+
+.pull-left[
 
 
+```r
+library(corx)
+
+cor &lt;-  palmerpenguins::penguins %&gt;%
+          select("bill length"    = bill_length_mm,
+                 "bill depth"     = bill_depth_mm,
+                 "flipper length" = flipper_length_mm,
+                 "weight"         = body_mass_g) %&gt;% 
+          corx(triangle = "lower",
+               stars    = c(0.05, 0.01, 0.001),
+               describe = c(`$M$` = mean, `$SD$` = sd)) 
+
+
+
+apa_table(cor$apa[,c(4,5,1,2,3)], 
+          caption = "Example corr matrix",
+          note    = "* p &lt; 0.05; ** p &lt; 0.01; *** p &lt; 0.001",
+          escape  = FALSE)
+```
+
+]
+.pull-right[
+
+&lt;img src="images/table6.PNG", width="100%"&gt;
+
+]
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
 ## Your turn ! 
 
-- load the `StudentsPerformance` data  (`read.csv("Data/StudentsPerformance.csv")`)
+- If not already done, create a new papaja-.Rmd document
 
-- make a publication ready table with `kable()` with the median, maximum, and minimum of `writing.score` and the correlation with `reading.score`
+- load the [`penguins`](https://allisonhorst.github.io/palmerpenguins/) data  (`library(palmerpenguins)`)
 
-- calculate a ANOVA comparing `math.score` with `gender` and `parental.level.of.education` as between factors (`aov(math.score ~ gender + parental.level.of.education, data = data)` ))
 
-- print your results for the factor `gender` in the text using `apa_print()`
+-  make a publication ready table with `kable()` showing the median, maximum, and minimum of `body_mass_g`  for each `species`, as well as the correlation with `bill_length_mm`
+
+- calculate a ANOVA comparing `body_mass_g` with `sex` and `island` as between factors (`aov(body_mass_g ~ sex + island, data = penguins)` ))
+
+- Report your results for one of the factors (e.g., `sex` or `island`) in the text using `apa_print()`
 
 - print the full ANOVA table using `apa_table()` 
 
@@ -717,6 +808,7 @@ Plots
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
+class: small
 ## Plots
 
 
@@ -727,35 +819,40 @@ Plots can be create as in `R Markdown` before:
 
 
 ```r
-mtcars %&gt;% 
-  ggplot(.,aes(x = factor(gear), y = hp)) +
-    geom_boxplot() +
-    theme_bw()
+library(palmerpenguins)
+
+
+penguins %&gt;% na.omit() %&gt;% 
+  ggplot(.,aes(x = flipper_length_mm, y = body_mass_g,
+               color = species, shape = species)) +
+    geom_point(size=2) 
 ```
 
-![](Part2_Papaja_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+![](Part2_Papaja_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
 
 ]
 
 .pull-right[
 
-`papaja` also provides a custom `ggplot` theme 
+`papaja` also provides a custom `ggplot` theme (`theme_apa`)
 
 
 ```r
-mtcars %&gt;% 
-  ggplot(.,aes(x = factor(gear), y = hp)) +
-    geom_boxplot() +
+penguins %&gt;% na.omit() %&gt;% 
+  ggplot(.,aes(x = flipper_length_mm, y = body_mass_g,
+               color = species, shape = species)) +
+    geom_point(size=2) +
 *   theme_apa()
 ```
 
-![](Part2_Papaja_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](Part2_Papaja_files/figure-html/unnamed-chunk-24-1.png)&lt;!-- --&gt;
 
 ]
 
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
+class: small
 ## Plots
 
 You can also use the custom functions `apa_beeplot(), apa_lineplot(), apa_barplot()`, and the generic `apa_factorial_plot()`
@@ -763,32 +860,36 @@ You can also use the custom functions `apa_beeplot(), apa_lineplot(), apa_barplo
 .pull-left[
 
 ```r
-head(ChickWeight)
+head(penguins)
 ```
 
 ```
-##   weight Time Chick Diet
-## 1     42    0     1    1
-## 2     51    2     1    1
-## 3     59    4     1    1
-## 4     64    6     1    1
-## 5     76    8     1    1
-## 6     93   10     1    1
+## # A tibble: 6 x 8
+##   species island bill_length_mm bill_depth_mm flipper_length_~ body_mass_g sex  
+##   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;            &lt;int&gt;       &lt;int&gt; &lt;fct&gt;
+## 1 Adelie  Torge~           39.1          18.7              181        3750 male 
+## 2 Adelie  Torge~           39.5          17.4              186        3800 fema~
+## 3 Adelie  Torge~           40.3          18                195        3250 fema~
+## 4 Adelie  Torge~           NA            NA                 NA          NA &lt;NA&gt; 
+## 5 Adelie  Torge~           36.7          19.3              193        3450 fema~
+## 6 Adelie  Torge~           39.3          20.6              190        3650 male 
+## # ... with 1 more variable: year &lt;int&gt;
 ```
 ]
 
 .pull-right[
 
 ```r
-apa_lineplot(
-   data    = ChickWeight,
-   id      = "Chick",
-   dv      = "weight",
-   factors = c("Time","Diet")
-)
+apa_beeplot(
+   data    = penguins %&gt;% mutate(ID = 1:nrow(.)),
+   id      = "ID",
+   dv      = "body_mass_g",
+   factors = c("year","island"),
+   ylab    = "Body Mass (g)",
+   xlab    = "Year")
 ```
 
-![](Part2_Papaja_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+![](Part2_Papaja_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
 ]
 
 
@@ -797,7 +898,7 @@ apa_lineplot(
 ---
 ## Plots
 
-You can also adjust the **figure size**, **dpi**, and add a **figure caption** via the code chunk options. For instance, adding `fig.cap="These are some chickens",dpi=600` to the chunk leads to : 
+You can also adjust the **figure size**, **dpi**, and add a **figure caption** via the code chunk options. For instance, adding `fig.cap="These are some penguins"` to the chunk leads to : 
 
 
 .pull-left[
@@ -819,7 +920,9 @@ You can also adjust the **figure size**, **dpi**, and add a **figure caption** v
 ---
 ## Your turn ! 
 
-- Plot the ANOVA you calculated before using one of the built-in plot functions (`apa_beeplot(), apa_lineplot(), apa_barplot(), apa_factorial_plot()`)
+- Plot the ANOVA you calculated before using one of the built-in plot functions (`apa_beeplot(), apa_lineplot(), apa_barplot(), apa_factorial_plot()`), or build your own plot ! 
+
+- Play around with the `fig.cap`, `fig.width`, and `fig.height` arguments in the chunk options of your plot
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
@@ -846,15 +949,15 @@ Example:
 ```r
 See Figure \@ref(fig:figureExp1).
 
-##```{r figureExp1}
+##```{r figureExp1, fig.cap = "Normal data"}
 plot(rnorm(50),rnorm(50))
 ##``
 
 
 Also see Equation \@ref(eq:mean).
 
-\begin{equation}
-\bar{X} = \frac{\sum_{i=1}^n X_i}{n} (\#eq:mean)
+\begin{equation}\label{eq:mean} 
+\bar{X} = \frac{\sum_{i=1}^n X_i}{n} 
 \end{equation}
 ```
 ]
@@ -899,7 +1002,9 @@ Also see Equation \@ref(eq:mean).
 bibliography      : ["r-references.bib","library.bib"]
 ```
 
-- Best way to get your .bib - file is via [Google Scholar](https://scholar.google.de/) or by exporting your Zotero/Citavi/etc. library.
+- Best way to get your .bib - file is by exporting your Zotero/Citavi/etc. library,  via [Google Scholar](https://scholar.google.de/) or via [Crossref](https://search.crossref.org/).
+
+- However, sometimes you have to edit the entries still by hand (or let some Hiwi do it)
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
@@ -929,13 +1034,24 @@ With pre-/postfix           | [e.g., @rubin1996, etc.] | (e.g., Rubin, 1996, etc
 
 &lt;!-- *********** NEW SLIDE ************** --&gt;
 ---
+## Your turn ! 
+
+- Add a name to the code chunks of your tables and plots
+
+- Refer to both in text using `\@ref(...)`
+
+- Add a new citation to the `mybib.bib` file (e.g., Birnbaum, M. H. (1999), https://doi.org/10.1037/1082-989X.4.3.243)
+
+
+&lt;!-- *********** NEW SLIDE ************** --&gt;
+---
 ## Quick Note: APA7
 
 This is still work in progress, see the open issue [here](https://github.com/crsh/papaja/issues/342), for some tipps. For instance:
 
 
 ```r
-csl               : "apa.csl"
+csl               : "apa7.csl"
 documentclass     : "apa7"
 output            : papaja::apa6_pdf
 ```
