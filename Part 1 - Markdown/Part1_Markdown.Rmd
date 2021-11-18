@@ -583,7 +583,7 @@ Our final sample consisted of $n$ = `r nrow(demo)` participants (`r mean(demo$ge
 ---
 ## Now it's your turn !
 
-- Try to write some inline R code (you can use the R-intern data.frames like `sleep`, `mtcars`, or`chickwts`)
+- Try to write some inline R code (you can use the R-intern data.frames like `sleep`, `mtcars`, or `chickwts`)
 - Combine it with `LaTeX` math-expressions ($)
 
 
@@ -691,7 +691,7 @@ For your `report.Rmd`, however, you have to use `read.csv("..\Data\raw.csv")`, t
 
 <!-- *********** NEW SLIDE ************** -->
 ---
-## Example reading in the [`pumpkin.csv`](https://github.com/rfordatascience/tidytuesday/blob/master/data/2021/2021-10-19/readme.md) 
+## Example reading in the `sleep.csv`
 
 
 When you are writing your RMarkdown and working on your analysis, you would use code like this:
