@@ -1,7 +1,7 @@
 ---
 title: "Workshop: Writing Manuscripts in R with Markdown and Papaja"
 author: "David Izydorczyk"
-date: "11.11.2021"
+date: "18.11.2021"
 output:
   xaringan::moon_reader:
     lib_dir: libs
