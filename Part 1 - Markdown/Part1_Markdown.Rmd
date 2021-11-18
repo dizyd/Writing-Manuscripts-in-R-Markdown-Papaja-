@@ -319,13 +319,13 @@ Levels of Headings
 # Section 1
 bla
 
-## Section 1.1
+## Sub-Section 1.1
 bla
 
-### Section 1.1.1
+### Paragraph 1.1.1
 bla
 
-#### Section 1.1.1.1
+#### Sub-Paragraph 1.1.1.1
 
 ```
 ]
@@ -576,25 +576,7 @@ $ M_{age} = `r demo[,"age"] %>% mean() %>% round()`$)
 
 Our final sample consisted of $n$ = `r nrow(demo)` participants (`r mean(demo$gender=="female")*100` % female, $M_{age} = `r demo[,"age"] %>% mean() %>% round(2)`$)
 
-***
 
-! Careful when selecting data.frame columns with $ inside `LaTeX` expressions. 
-
-
-```{r eval = FALSE}
-$ M_{age} = `r demo$age %>% mean() %>% round()`$
-```
-
-
-***
-
-`tidyverse` "trick":
-
-```{r eval = FALSE}
-$ M_{age} = `r demo %>% pull(age) %>% mean() %>% round()`$
-```
-
-$M_{age} = `r demo %>% pull(age) %>% mean() %>% round(2)`$
 
 
 <!-- *********** NEW SLIDE ************** -->
